@@ -178,6 +178,7 @@ const loadCategorySearch = async (searchPost) => {
             badge = `<div class="notification w-4 h-4 rounded-full bg-red-600 border-2 border-white absolute right-0 -top-1"
             ></div>`
         }
+
         divCard.innerHTML = `
             <!-- profile pic -->
             <div class="w-20 h-20 rounded-2xl bg-white relative">
