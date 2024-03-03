@@ -160,7 +160,7 @@ const loadPosts = async () => {
 
 }
 
-
+const loader = document.getElementById('loader');
 const loadCategorySearch = async (searchPost) => {
     const res = await fetch(`https://openapi.programming-hero.com/api/retro-forum/posts?category=${searchPost}`);
     const data = await res.json();
@@ -168,6 +168,9 @@ const loadCategorySearch = async (searchPost) => {
     const categoryPostContainer = document.getElementById('category-post-container');
     categoryPostContainer.innerText = ''
     categories.forEach((category) => {
+        setTimeout(() => {
+            loader.classList.add('hidden')
+        }, 2000);
         const divCard = document.createElement('div');
         divCard.className = 'border border-[#797DFC] rounded-3xl bg-[#F3F3F5] p-5 lg:p-10 flex flex-col lg:flex-row gap-6'
         let badge = "";
@@ -266,6 +269,11 @@ const loadCategorySearch = async (searchPost) => {
 const searchPost = async () => {
     const inputField = document.getElementById("input-field").value;
     loadCategorySearch(inputField)
+    if(document.getElementById("input-field").value !== ''){
+            loader.classList.remove('hidden')
+
+
+    }
 
 }
 
