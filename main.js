@@ -98,6 +98,27 @@ const loadCategory = async () => {
 
     });
 
+    const catBtns = document.querySelectorAll('.catBtn');
+    const showCatView = document.getElementById('show-cat-view');
+    const showCount = document.getElementById('count-cat-post');
+    catBtns.forEach((btn, index) => {
+        btn.addEventListener('click', function() {
+            count = count + 1;
+            showCount.innerText = count;
+            const category = categories[index];
+            const div = document.createElement('div');
+            div.className = "rounded-2xl bg-white p-4 flex items-center justify-between";
+            div.innerHTML = `
+                <h3 class="text-[#12132D] text-base font-semibold w-3/4">${category.title}</h3>
+                <p class="flex items-center gap-3 text-[#12132D99] text-base font-normal">
+                    <i class="fa-regular fa-eye"></i>
+                    <span>${category.view_count}</span>
+                </p>
+            `;
+            showCatView.appendChild(div);
+        });
+    });
+
 
 
 
