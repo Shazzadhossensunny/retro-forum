@@ -1,25 +1,30 @@
 let count = 0;
 
 const loadCategory = async () => {
-    const res = await fetch(`https://openapi.programming-hero.com/api/retro-forum/posts`);
-    const data = await res.json();
-    const categories = data.posts;
-    const categoryPostContainer = document.getElementById('category-post-container');
-    categoryPostContainer.innerText = ''
-    categories.forEach((category) => {
-        const divCard = document.createElement('div');
-        divCard.className = 'border border-[#797DFC] rounded-3xl bg-[#F3F3F5] p-5 lg:p-10 flex flex-col lg:flex-row gap-6'
+  const res = await fetch(
+    `https://openapi.programming-hero.com/api/retro-forum/posts`
+  );
+  const data = await res.json();
+  const categories = data.posts;
+  const categoryPostContainer = document.getElementById(
+    "category-post-container"
+  );
+  categoryPostContainer.innerText = "";
+  categories.forEach((category) => {
+    const divCard = document.createElement("div");
+    divCard.className =
+      "card border border-[#797DFC] rounded-3xl bg-[#F3F3F5] p-5 lg:p-10 flex flex-col lg:flex-row gap-6";
 
-        let badge = "";
-        if(category.isActive === true){
-            badge = `<div class="notification w-4 h-4 rounded-full bg-[#10B981] border-2 border-white absolute right-0 -top-1"
-            ></div>`
-        }else{
-            badge = `<div class="notification w-4 h-4 rounded-full bg-red-600 border-2 border-white absolute right-0 -top-1"
-            ></div>`
-        }
+    let badge = "";
+    if (category.isActive === true) {
+      badge = `<div class="notification w-4 h-4 rounded-full bg-[#10B981] border-2 border-white absolute right-0 -top-1"
+            ></div>`;
+    } else {
+      badge = `<div class="notification w-4 h-4 rounded-full bg-red-600 border-2 border-white absolute right-0 -top-1"
+            ></div>`;
+    }
 
-        divCard.innerHTML = `
+    divCard.innerHTML = `
             <!-- profile pic -->
             <div class="w-20 h-20 rounded-2xl bg-white relative">
               ${badge}
@@ -91,48 +96,54 @@ const loadCategory = async () => {
                 </div>
               </div>
             </div>
-        `
-        categoryPostContainer.appendChild(divCard);
+        `;
+    categoryPostContainer.appendChild(divCard);
+  });
 
+  const catBtns = document.querySelectorAll(".catBtn");
+  const showCatView = document.getElementById("show-cat-view");
+  const showCount = document.getElementById("count-cat-post");
+  const cards = document.querySelectorAll(".card");
+  let previousCardIndex = null;
+  catBtns.forEach((btn, index) => {
+    btn.addEventListener("click", function () {
+      if (previousCardIndex !== null) {
+        cards[previousCardIndex].style.backgroundColor = "";
+      }
 
-
-    });
-
-    const catBtns = document.querySelectorAll('.catBtn');
-    const showCatView = document.getElementById('show-cat-view');
-    const showCount = document.getElementById('count-cat-post');
-    catBtns.forEach((btn, index) => {
-        btn.addEventListener('click', function() {
-            count = count + 1;
-            showCount.innerText = count;
-            const category = categories[index];
-            const div = document.createElement('div');
-            div.className = "rounded-2xl bg-white p-4 flex items-center justify-between";
-            div.innerHTML = `
+      count = count + 1;
+      showCount.innerText = count;
+      const singleCard = cards[index];
+      singleCard.style.backgroundColor = "#797DFC1A";
+      const category = categories[index];
+      const div = document.createElement("div");
+      div.className =
+        "rounded-2xl bg-white p-4 flex items-center justify-between";
+      div.innerHTML = `
                 <h3 class="text-[#12132D] text-base font-semibold w-3/4">${category.title}</h3>
                 <p class="flex items-center gap-3 text-[#12132D99] text-base font-normal">
                     <i class="fa-regular fa-eye"></i>
                     <span>${category.view_count}</span>
                 </p>
             `;
-            showCatView.appendChild(div);
-        });
+
+      showCatView.appendChild(div);
+      previousCardIndex = index;
     });
-
-
-
-
-}
-
+  });
+};
 
 const loadPosts = async () => {
-    const res = await fetch('https://openapi.programming-hero.com/api/retro-forum/latest-posts');
-    const data = await res.json();
-    const postContainer = document.getElementById('posts-container');
-    data.forEach((post) => {
-        const divCard = document.createElement('div');
-        divCard.className = 'card border border-[#12132D26] rounded-3xl bg-white p-4 lg:p-6'
-        divCard.innerHTML = `
+  const res = await fetch(
+    "https://openapi.programming-hero.com/api/retro-forum/latest-posts"
+  );
+  const data = await res.json();
+  const postContainer = document.getElementById("posts-container");
+  data.forEach((post) => {
+    const divCard = document.createElement("div");
+    divCard.className =
+      "card border border-[#12132D26] rounded-3xl bg-white p-4 lg:p-6";
+    divCard.innerHTML = `
         <figure>
           <img
             src="${post.cover_image}"
@@ -145,7 +156,7 @@ const loadPosts = async () => {
             class="flex gap-2 items-center text-[#12132D99] text-base font-normal mt-6"
           >
             <i class="fa-regular fa-calendar"></i>
-            <p>${post.author?.posted_date || "No Publish Date" } </p>
+            <p>${post.author?.posted_date || "No Publish Date"} </p>
           </div>
 
           <h2 class="text-[#12132D] text-lg font-extrabold mt-4">
@@ -173,37 +184,39 @@ const loadPosts = async () => {
           </div>
         </div>
 
-        `
-        postContainer.appendChild(divCard)
+        `;
+    postContainer.appendChild(divCard);
+  });
+};
 
-    })
-
-
-}
-
-const loader = document.getElementById('loader');
+const loader = document.getElementById("loader");
 const loadCategorySearch = async (searchPost) => {
-    const res = await fetch(`https://openapi.programming-hero.com/api/retro-forum/posts?category=${searchPost}`);
-    const data = await res.json();
-    const categories = data.posts;
-    const categoryPostContainer = document.getElementById('category-post-container');
-    categoryPostContainer.innerText = ''
-    categories.forEach((category) => {
-        setTimeout(() => {
-            loader.classList.add('hidden')
-        }, 2000);
-        const divCard = document.createElement('div');
-        divCard.className = 'border border-[#797DFC] rounded-3xl bg-[#F3F3F5] p-5 lg:p-10 flex flex-col lg:flex-row gap-6'
-        let badge = "";
-        if(category.isActive === true){
-            badge = `<div class="notification w-4 h-4 rounded-full bg-[#10B981] border-2 border-white absolute right-0 -top-1"
-            ></div>`
-        }else{
-            badge = `<div class="notification w-4 h-4 rounded-full bg-red-600 border-2 border-white absolute right-0 -top-1"
-            ></div>`
-        }
+  const res = await fetch(
+    `https://openapi.programming-hero.com/api/retro-forum/posts?category=${searchPost}`
+  );
+  const data = await res.json();
+  const categories = data.posts;
+  const categoryPostContainer = document.getElementById(
+    "category-post-container"
+  );
+  categoryPostContainer.innerText = "";
+  categories.forEach((category) => {
+    setTimeout(() => {
+      loader.classList.add("hidden");
+    }, 2000);
+    const divCard = document.createElement("div");
+    divCard.className =
+      "border border-[#797DFC] rounded-3xl bg-[#F3F3F5] p-5 lg:p-10 flex flex-col lg:flex-row gap-6";
+    let badge = "";
+    if (category.isActive === true) {
+      badge = `<div class="notification w-4 h-4 rounded-full bg-[#10B981] border-2 border-white absolute right-0 -top-1"
+            ></div>`;
+    } else {
+      badge = `<div class="notification w-4 h-4 rounded-full bg-red-600 border-2 border-white absolute right-0 -top-1"
+            ></div>`;
+    }
 
-        divCard.innerHTML = `
+    divCard.innerHTML = `
             <!-- profile pic -->
             <div class="w-20 h-20 rounded-2xl bg-white relative">
               ${badge}
@@ -275,31 +288,18 @@ const loadCategorySearch = async (searchPost) => {
                 </div>
               </div>
             </div>
-        `
-        categoryPostContainer.appendChild(divCard);
-
-
-
-    });
-
-
-
-
-}
+        `;
+    categoryPostContainer.appendChild(divCard);
+  });
+};
 
 const searchPost = async () => {
-    const inputField = document.getElementById("input-field").value;
-    loadCategorySearch(inputField)
-    if(document.getElementById("input-field").value !== ''){
-            loader.classList.remove('hidden')
-
-
-    }
-
-}
-
-
-
+  const inputField = document.getElementById("input-field").value;
+  loadCategorySearch(inputField);
+  if (document.getElementById("input-field").value !== "") {
+    loader.classList.remove("hidden");
+  }
+};
 
 loadPosts();
 loadCategory();
