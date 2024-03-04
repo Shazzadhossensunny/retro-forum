@@ -299,11 +299,16 @@ const loadCategorySearch = async (searchPost) => {
 
 const searchPost = async () => {
   const inputField = document.getElementById("input-field").value;
-  loadCategorySearch(inputField);
+
   if (document.getElementById("input-field").value !== "") {
     loader.classList.remove("hidden");
   }
-};
+  if(document.getElementById("input-field").value == ""){
+    alert('Please Input Correct Category')
+    return;
+  }
+  loadCategorySearch(inputField);
 
+};
 loadPosts();
 loadCategory();
